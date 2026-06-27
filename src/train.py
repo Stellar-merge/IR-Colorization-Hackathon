@@ -40,8 +40,10 @@ def train():
     lr = 0.0002
     batch_size = 4
     epochs = 100
-    os.makedirs("saved_models", exist_ok=True)
-    os.makedirs("output_samples", exist_ok=True)
+    SAVED_MODELS_DIR = "saved_models"
+    OUTPUT_SAMPLES_DIR = "output_samples"
+    os.makedirs(SAVED_MODELS_DIR, exist_ok=True)
+    os.makedirs(OUTPUT_SAMPLES_DIR, exist_ok=True)
     
     # 2. Initialize models
     generator = GeneratorUNet(in_channels=1, out_channels=3).to(device)
@@ -129,9 +131,12 @@ def train():
             
             # Combine real IR (repeated to 3 channels), generated RGB, and Real RGB for visualization
             img_sample = torch.cat((sample_ir.repeat(1, 3, 1, 1), sample_fake, sample_rgb), -2)
-            save_image(img_sample, f"output_samples/epoch_{epoch}.png", nrow=4, normalize=True)
+            save_image(img_sample, os.path.join(OUTPUT_SAMPLES_DIR, f"epoch_{epoch}.png"), nrow=4, normalize=True)
             
-            torch.save(generator.state_dict(), f"saved_models/generator_epoch_{epoch}.pth")
-
+            import io
+            buffer = io.BytesIO()
+            torch.save(generator.state_dict(), buffer)
+            with open(os.path.join(SAVED_MODELS_DIR, f"generator_epoch_{epoch}.pth"), "wb") as f:
+                f.write(buffer.getvalue())
 if __name__ == "__main__":
     train()
