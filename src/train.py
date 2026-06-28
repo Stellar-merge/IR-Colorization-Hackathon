@@ -31,6 +31,7 @@ from tqdm import tqdm
 from models.generator import GeneratorUNet
 from models.discriminator import Discriminator
 from data.dataset import LandsatDataset
+from utils.metrics import calculate_psnr
 
 def train():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -117,9 +118,12 @@ def train():
             loss_D.backward()
             optimizer_D.step()
             
+            # Calculate PSNR for this batch (acts as an "accuracy" metric for image generation)
+            psnr = calculate_psnr(fake_rgb.detach(), real_rgb)
+            
             # Update progress bar
             loop.set_description(f"Epoch [{epoch}/{epochs}]")
-            loop.set_postfix(loss_D=loss_D.item(), loss_G=loss_G.item())
+            loop.set_postfix(loss_D=loss_D.item(), loss_G=loss_G.item(), psnr=f"{psnr:.2f}")
             
         # Save sample images every 5 epochs
         if epoch % 5 == 0:
