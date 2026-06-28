@@ -25,14 +25,21 @@ By competing, the Generator gets incredibly good at producing highly realistic c
 
 We use `uv` to manage our Python environment, making setup incredibly fast and perfectly reproducible across Windows, Mac, and Linux.
 
-### Step 1: Install Dependencies
+### Step 1: Clone the Repository
+First, clone this repository to your local machine and navigate into it:
+```bash
+git clone https://github.com/your-username/IR-Colorization-Hackathon.git
+cd IR-Colorization-Hackathon
+```
+
+### Step 2: Install Dependencies
 Open your terminal in the project folder and run:
 ```bash
 uv sync
 ```
 *This will automatically create an isolated virtual environment (`.venv`) and install PyTorch (with CUDA support!) and all other dependencies.*
 
-### Step 2: Set up your Google Earth Engine Credentials
+### Step 3: Set up your Google Earth Engine Credentials
 We provide an automated script to download training data directly from Google Earth Engine.
 1. Create a file named `.env` in the root of the project.
 2. Add your Google Cloud Project ID to it like this:
@@ -45,7 +52,7 @@ We provide an automated script to download training data directly from Google Ea
    uv run python src/data/download_gee.py
    ```
 
-### Step 3: Train the Model
+### Step 4: Train the Model
 Once your data is downloaded into the `data/ir/` and `data/rgb/` folders, you can start training the AI!
 
 ```bash
