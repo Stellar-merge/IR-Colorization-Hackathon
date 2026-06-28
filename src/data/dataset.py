@@ -8,11 +8,10 @@ import torchvision.transforms as transforms
 
 class LandsatDataset(Dataset):
     """
-    Dataset for paired IR (grayscale) and RGB satellite images.
-    Expects:
-        root_dir/ir/  -> grayscale IR images (.png or .jpg)
-        root_dir/rgb/ -> corresponding RGB images (.png or .jpg)
-    Files are matched by sorted order, so filenames should correspond.
+    This class helps Python load our images from the hard drive so the AI can read them.
+    It expects two folders:
+        data/ir/  -> The black-and-white infrared images
+        data/rgb/ -> The corresponding real color images
     """
 
     def __init__(self, root_dir: str, img_size: int = 256):

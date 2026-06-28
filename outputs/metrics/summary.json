@@ -1,0 +1,13 @@
+{
+    "Total Images": 50,
+    "Average PSNR": 28.832738990783692,
+    "Average SSIM": 0.5824790000915527,
+    "Average LPIPS": 0.3134563836455345,
+    "Average FID": 132.9200557140544,
+    "Average MSE": 0.001672442345734453,
+    "Average MAE": 0.02809063303284347,
+    "Average Inference Time (s)": 0.01437474250793457,
+    "Min Inference Time (s)": 0.003996610641479492,
+    "Max Inference Time (s)": 0.3430798053741455,
+    "Average FPS": 69.56646349999104
+}

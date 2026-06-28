@@ -61,7 +61,7 @@ class GeneratorUNet(nn.Module):
         )
 
     def forward(self, x):
-        # U-Net encoder
+        # Encoder: Make the image smaller to learn its structure
         d1 = self.down1(x)
         d2 = self.down2(d1)
         d3 = self.down3(d2)
@@ -70,7 +70,7 @@ class GeneratorUNet(nn.Module):
         d6 = self.down6(d5)
         d7 = self.down7(d6)
         d8 = self.down8(d7)
-        # U-Net decoder with skip connections
+        # Decoder: Make the image bigger and add the colors back using skip connections
         u1 = self.up1(d8, d7)
         u2 = self.up2(u1, d6)
         u3 = self.up3(u2, d5)

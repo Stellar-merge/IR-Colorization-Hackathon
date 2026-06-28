@@ -1,79 +1,88 @@
-# 🌍 IR-Colorization-Hackathon
+# InfraVision AI
 
-Welcome to the **IR Image Enhancement & Colorization** project! This repository contains a deep learning pipeline built to transform monochrome, low-contrast Infrared (IR) satellite images into high-resolution, naturally colored RGB images. 
+## Project Overview
+InfraVision AI is a futuristic web application and machine learning project that converts Infrared (IR) satellite images into full-color RGB images. We use an AI model called Pix2Pix to automatically guess and fill in the missing colors, helping researchers and students view satellite data in true color.
 
-This helps human analysts visualize satellite data much faster and can improve downstream machine learning tasks!
+## Problem Statement
+Satellites often capture images in the infrared spectrum because it helps them see through thin clouds and gather data about temperature or vegetation. However, these infrared images look like black-and-white or false-color pictures, which are very hard for humans to understand intuitively. Our goal is to use AI to automatically colorize these infrared images so they look like normal, human-readable satellite photos.
 
----
+## Features
+- **AI Colorization:** Uses a trained Pix2Pix (U-Net) neural network to turn IR images into RGB images.
+- **Modern Dashboard:** A sleek, futuristic web interface inspired by ISRO and NASA mission control.
+- **Fast Evaluation:** A complete testing script that automatically calculates how well the AI model is performing.
+- **Detailed Reports:** Automatically generates graphs, heatmaps, and quality scores so you can see exactly where the AI succeeded or made mistakes.
 
-## 🧠 How It Works (For Beginners)
-
-Our AI pipeline is broken down into two main parts:
-
-### 1. The Image Sharpener (SRCNN Module)
-Before we add color, we first need to make sure the image is sharp. We use a **Super-Resolution Convolutional Neural Network (SRCNN)**. It looks at the blurry/low-contrast raw Infrared image and enhances its structural details. We chose SRCNN because it's fast, lightweight, and perfect for a hackathon timeframe!
-
-### 2. The Colorizer (Pix2Pix GAN)
-Once the image is sharp, we use a **Generative Adversarial Network (GAN)** to paint it. A GAN is basically two AI networks competing against each other:
-* **The Generator (The Artist - U-Net)**: It looks at the enhanced IR image and tries to "paint" realistic colors onto it. U-Net is great because it remembers the structural edges from the input.
-* **The Discriminator (The Art Critic - PatchGAN)**: It looks at the painted image and tries to guess if it's a "real" satellite image or a "fake" generated one. 
-By competing, the Generator gets incredibly good at producing highly realistic colors.
-
----
-
-## 🚀 Getting Started
-
-We use `uv` to manage our Python environment, making setup incredibly fast and perfectly reproducible across Windows, Mac, and Linux.
-
-### Step 1: Clone the Repository
-First, clone this repository to your local machine and navigate into it:
-```bash
-git clone https://github.com/your-username/IR-Colorization-Hackathon.git
-cd IR-Colorization-Hackathon
+## Folder Structure
+```text
+IR-Colorization-Hackathon/
+│
+├── data/                  # Contains the test satellite images (IR and RGB)
+├── saved_models/          # Contains our trained AI model weights
+├── src/                   # Source code for the AI models and dataset loaders
+├── web/                   # The Next.js web dashboard frontend
+├── evaluate.py            # The main script to run tests and evaluate the AI
+└── outputs/               # Where the final graphs, reports, and metrics are saved
 ```
 
-### Step 2: Install Dependencies
-Open your terminal in the project folder and run:
-```bash
-uv sync
-```
-*This will automatically create an isolated virtual environment (`.venv`) and install PyTorch (with CUDA support!) and all other dependencies.*
+## Installation
 
-### Step 3: Set up your Google Earth Engine Credentials
-We provide an automated script to download training data directly from Google Earth Engine.
-1. Create a file named `.env` in the root of the project.
-2. Add your Google Cloud Project ID to it like this:
-   ```env
-   EE_PROJECT_ID=your-google-cloud-project-id
-   ```
-   *(You can look at `.env.example` if you forget!)*
-3. Run the download script to fetch the imagery:
+1. **Clone the repository:**
+   Download the project folder to your computer.
+
+2. **Install Python Packages:**
+   Make sure you have Python installed. Then, install the required packages using:
    ```bash
-   uv run python src/data/download_gee.py
+   pip install torch torchvision opencv-python numpy matplotlib seaborn pandas scikit-image torchmetrics tqdm rich pytorch-fid lpips
    ```
 
-### Step 4: Train the Model
-Once your data is downloaded into the `data/ir/` and `data/rgb/` folders, you can start training the AI!
+3. **Install Web Dashboard Packages:**
+   Open a new terminal, go into the `web` folder, and install the website dependencies:
+   ```bash
+   cd web
+   npm install
+   ```
 
+## How to Run
+
+### 1. Start the Web Dashboard
+To see the futuristic web interface, run the development server:
 ```bash
-uv run python src/train.py
+cd web
+npm run dev
+```
+Then, open your web browser and go to `http://localhost:3000`.
+
+### 2. Run the Evaluation Pipeline
+To test the AI model and generate performance graphs, run the evaluation script from the main folder:
+```bash
+python evaluate.py --test_dir data/ --output outputs/
 ```
 
-**Note on Windows/OpenBLAS Threading:**
-Sometimes PyTorch on Windows crashes due to OpenBLAS memory allocation. We have built-in a flag that limits the threads to `1` to prevent this. It is enabled by default. If you want to disable the thread limit to speed things up (if your system handles it), you can run:
-```bash
-uv run python src/train.py --limit_threads=false
-```
+## Training
+*Note: The model is already trained and the weights are included in the `saved_models/` folder. You do not need to run training again.*
 
----
+If you do want to train a new model from scratch in the future, you would use a training script that feeds pairs of IR and RGB images to the Pix2Pix model until it learns the mapping.
 
-## 📁 Where do my files go?
+## Testing and Evaluation
+We use several standard computer vision metrics to test how good the AI's colors are. 
+* **Why do we use these?** Because predicting colors isn't a simple "True or False" question. We need math to tell us how close the predicted color is to the real color.
 
-* **`output_samples/`**: Every 5 epochs during training, the model will save a side-by-side image comparison (Input IR, Generated Color, Target Color) here. Check this folder to watch your AI learn in real-time!
-* **`saved_models/`**: Every 5 epochs, the "brain" (weights) of your AI will be saved as a `.pth` file in this folder.
+- **PSNR (Peak Signal-to-Noise Ratio):** Measures the overall quality of the image. Higher is better.
+- **SSIM (Structural Similarity Index):** Measures if the shapes, buildings, and rivers look correct. Closer to 1 is better.
+- **LPIPS & FID:** These are advanced "perceptual" metrics. They use another AI to judge if the final image actually *looks* real to the human eye. Lower is better.
 
-⚠️ **WARNING FOR TEAM COLLABORATION** ⚠️
-When pushing to GitHub, **never** push the `.venv/`, `data/`, or `saved_models/` folders. 
-* Your `.venv` won't work on other people's computers.
-* Your `data/` and `saved_models/` are extremely large and will crash your git push (GitHub has a 100MB file limit). 
-*(Don't worry, we've already set up a `.gitignore` file to protect you from accidentally doing this!)*
+## Results
+Based on a recent test of 50 images:
+- **Images Evaluated:** 50
+- **Average PSNR:** 28.83 dB
+- **Average SSIM:** 0.5825
+- **Average LPIPS:** 0.3135
+- **Average FID:** 132.92
+- **Speed:** 69.6 Frames Per Second (FPS) on a standard graphics card.
+
+The model successfully colorizes the satellite images and runs fast enough for real-time video feeds!
+
+## Future Work
+- **Live Video Stream:** Connect the AI directly to a live satellite feed.
+- **Better AI Models:** Upgrade from Pix2Pix to a modern Diffusion model for even higher quality images.
+- **Live Backend:** Connect the Python AI code directly to the Next.js website so users can upload their own images and get real-time colorization results.

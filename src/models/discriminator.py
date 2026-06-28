@@ -22,6 +22,6 @@ class Discriminator(nn.Module):
         )
 
     def forward(self, img_A, img_B):
-        # Concatenate image and condition image by channels to produce input
+        # Combine the input image and the target image so the model can judge them together
         img_input = torch.cat((img_A, img_B), 1)
         return self.model(img_input)
