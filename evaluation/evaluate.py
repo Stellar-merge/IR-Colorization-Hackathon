@@ -18,7 +18,7 @@ def evaluate_all():
     
     # We resolve paths relative to the project root (assumed to be parent of src)
     project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    data_dir = os.path.join(project_root, "data")
+    data_dir = os.path.join(project_root, "data", "val")
     model_dir = os.path.join(project_root, "saved_models")
     
     # Load dataset
