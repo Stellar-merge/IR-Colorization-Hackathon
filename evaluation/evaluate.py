@@ -96,12 +96,15 @@ def evaluate_all():
     print(f"Best SSIM Model: {best_ssim_model['filename']} (PSNR: {best_ssim_model['psnr']:.2f} dB, SSIM: {best_ssim_model['ssim']:.4f})")
     print("=" * 40)
 
-    # Generate MD report
-    evaluation_dir = os.path.dirname(os.path.abspath(__file__))
+    # Generate MD report in root eval_results/ directory
+    project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    results_dir = os.path.join(project_root, "eval_results")
+    os.makedirs(results_dir, exist_ok=True)
+    
     n = 0
     while True:
         report_filename = f"eval_results_{n}.md"
-        report_path = os.path.join(evaluation_dir, report_filename)
+        report_path = os.path.join(results_dir, report_filename)
         if not os.path.exists(report_path):
             break
         n += 1
@@ -142,7 +145,7 @@ def evaluate_all():
     with open(report_path, "w", encoding="utf-8") as f:
         f.write("\n".join(md_content) + "\n")
         
-    print(f"\nSaved evaluation report to: evaluation/{report_filename}")
+    print(f"\nSaved evaluation report to: eval_results/{report_filename}")
 
 if __name__ == "__main__":
     evaluate_all()

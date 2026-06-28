@@ -76,7 +76,7 @@ uv run python evaluation/evaluate.py
 **Benchmarking Workflow:**
 * **Auto-scan Checkpoints**: The runner scans the `saved_models/` folder and orders all checkpoints sequentially by training epoch.
 * **Metric Computation**: It computes structural coherence (SSIM) and color-matching accuracy (PSNR) compared to ground-truth RGB imagery.
-* **Auto-generated Reports**: The script dynamically outputs a benchmark table to the console and generates a sequential markdown report at `evaluation/eval_results_{n}.md` (e.g., `eval_results_0.md`, `eval_results_1.md`) so you can track improvement across runs.
+* **Auto-generated Reports**: The script dynamically outputs a benchmark table to the console and generates a sequential markdown report at `eval_results/eval_results_{n}.md` (e.g., `eval_results_0.md`, `eval_results_1.md`) so you can track improvement across runs.
 * **Best Model Selection**: Use the summary at the bottom of the generated report to choose the best weights for deployment (e.g., Hugging Face model repository).
 
 ---
@@ -85,10 +85,11 @@ uv run python evaluation/evaluate.py
 
 * **`output_samples/`**: Every 5 epochs during training, the model will save a side-by-side image comparison (Input IR, Generated Color, Target Color) here. Check this folder to watch your AI learn in real-time!
 * **`saved_models/`**: Every 5 epochs, the "brain" (weights) of your AI will be saved as a `.pth` file in this folder.
-* **`evaluation/`**: Contains the evaluation scripts (`evaluate.py`) and the auto-generated performance benchmarking reports (`eval_results_{n}.md`).
+* **`evaluation/`**: Contains the evaluation scripts (`evaluate.py`).
+* **`eval_results/`**: Contains the auto-generated performance benchmarking reports (`eval_results_{n}.md`).
 
 ⚠️ **WARNING FOR TEAM COLLABORATION** ⚠️
-When pushing to GitHub, **never** push the `.venv/`, `data/`, or `saved_models/` folders. 
+When pushing to GitHub, **never** push the `.venv/`, `data/`, `saved_models/`, or `eval_results/` folders. 
 * Your `.venv` won't work on other people's computers.
 * Your `data/` and `saved_models/` are extremely large and will crash your git push (GitHub has a 100MB file limit). 
 *(Don't worry, we've already set up a `.gitignore` file to protect you from accidentally doing this!)*
