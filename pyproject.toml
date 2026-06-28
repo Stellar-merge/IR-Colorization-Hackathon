@@ -16,6 +16,9 @@ dependencies = [
     "earthengine-api",
     "ee>=0.2",
     "python-dotenv>=1.2.1",
+    "fastapi",
+    "uvicorn",
+    "python-multipart",
 ]
 
 [[tool.uv.index]]

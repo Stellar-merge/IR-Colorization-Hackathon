@@ -77,19 +77,48 @@ uv run python evaluation/evaluate.py
 * **Auto-scan Checkpoints**: The runner scans the `saved_models/` folder and orders all checkpoints sequentially by training epoch.
 * **Metric Computation**: It computes structural coherence (SSIM) and color-matching accuracy (PSNR) compared to ground-truth RGB imagery.
 * **Auto-generated Reports**: The script dynamically outputs a benchmark table to the console and generates a sequential markdown report at `eval_results/eval_results_{n}.md` (e.g., `eval_results_0.md`, `eval_results_1.md`) so you can track improvement across runs.
-* **Best Model Selection**: Use the summary at the bottom of the generated report to choose the best weights for deployment (e.g., Hugging Face model repository).
+* **Best Model Selection**: Use the summary at the bottom of the generated report to choose the best weights for deployment.
+
+### Step 6: Offline Single-Image Prediction (CLI)
+You can run colorization and detail enhancement on any raw IR image directly from your terminal using the offline prediction script:
+
+```bash
+uv run python src/predict.py --image path/to/your/image.png
+```
+* **Weights Resolution**: The script automatically scans your `saved_models/` directory, selects the latest checkpoint, and saves both the structural-enhanced IR and colorized RGB outputs directly into `output_samples/`.
+* **Detail Fallback**: If no SRCNN weights are provided, it automatically applies advanced CLAHE & Unsharp Masking filters to enhance structural details.
+
+### Step 7: Launch the Web UI & Model API Server
+The project includes a web dashboard built with Next.js that communicates with a FastAPI model-serving backend.
+
+1. **Start the Python Inference API Server**:
+   ```bash
+   uv run python src/serve.py
+   ```
+   *This starts the FastAPI server at `http://127.0.0.1:8000`. The server loads the model once into memory (utilizing GPU CUDA acceleration if available) for instant, sub-second responses.*
+
+2. **Start the Next.js Web Frontend**:
+   Open a separate terminal window and run:
+   ```bash
+   cd web
+   npm run dev
+   ```
+   *This starts the Next.js development server. Open [http://localhost:3000](http://localhost:3000) in your browser to view the interactive imagery reconstruction portal!*
 
 ---
 
 ## 📁 Where do my files go?
 
-* **`output_samples/`**: Every 5 epochs during training, the model will save a side-by-side image comparison (Input IR, Generated Color, Target Color) here. Check this folder to watch your AI learn in real-time!
-* **`saved_models/`**: Every 5 epochs, the "brain" (weights) of your AI will be saved as a `.pth` file in this folder.
-* **`evaluation/`**: Contains the evaluation scripts (`evaluate.py`).
-* **`eval_results/`**: Contains the auto-generated performance benchmarking reports (`eval_results_{n}.md`).
+* **`src/predict.py`**: Command-line tool for offline image prediction.
+* **`src/serve.py`**: FastAPI server hosting the deep learning API endpoints.
+* **`web/`**: Next.js interactive web frontend dashboard.
+* **`output_samples/`**: During training, saves a side-by-side image comparison (Input IR, Generated, Target) every 5 epochs. During offline prediction, outputs are saved here.
+* **`saved_models/`**: Stores generator training checkpoints (`generator_epoch_{n}.pth`) saved every 5 epochs.
+* **`evaluation/`**: Contains the scripts for automated performance evaluations.
+* **`eval_results/`**: Holds sequential markdown reports tracking model benchmark stats.
 
 ⚠️ **WARNING FOR TEAM COLLABORATION** ⚠️
-When pushing to GitHub, **never** push the `.venv/`, `data/`, `saved_models/`, or `eval_results/` folders. 
-* Your `.venv` won't work on other people's computers.
-* Your `data/` and `saved_models/` are extremely large and will crash your git push (GitHub has a 100MB file limit). 
+When pushing to GitHub, **never** push the `.venv/`, `data/`, `saved_models/`, `eval_results/`, or `web/node_modules/` folders. 
+* Your environments and nodes won't work on other people's computers.
+* Training data and model checkpoints are extremely large and will crash your git push (GitHub has a 100MB file limit). 
 *(Don't worry, we've already set up a `.gitignore` file to protect you from accidentally doing this!)*
