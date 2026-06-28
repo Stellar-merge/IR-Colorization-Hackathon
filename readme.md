@@ -65,12 +65,27 @@ Sometimes PyTorch on Windows crashes due to OpenBLAS memory allocation. We have 
 uv run python src/train.py --limit_threads=false
 ```
 
+### Step 5: Evaluate Checkpoints & Performance Benchmarking
+To identify the best performing model from your training runs, you can benchmark all saved checkpoints against Peak Signal-to-Noise Ratio (**PSNR**) and Structural Similarity Index (**SSIM**) metrics.
+
+Run the automated evaluation runner:
+```bash
+uv run python evaluation/evaluate.py
+```
+
+**Benchmarking Workflow:**
+* **Auto-scan Checkpoints**: The runner scans the `saved_models/` folder and orders all checkpoints sequentially by training epoch.
+* **Metric Computation**: It computes structural coherence (SSIM) and color-matching accuracy (PSNR) compared to ground-truth RGB imagery.
+* **Auto-generated Reports**: The script dynamically outputs a benchmark table to the console and generates a sequential markdown report at `evaluation/eval_results_{n}.md` (e.g., `eval_results_0.md`, `eval_results_1.md`) so you can track improvement across runs.
+* **Best Model Selection**: Use the summary at the bottom of the generated report to choose the best weights for deployment (e.g., Hugging Face model repository).
+
 ---
 
 ## 📁 Where do my files go?
 
 * **`output_samples/`**: Every 5 epochs during training, the model will save a side-by-side image comparison (Input IR, Generated Color, Target Color) here. Check this folder to watch your AI learn in real-time!
 * **`saved_models/`**: Every 5 epochs, the "brain" (weights) of your AI will be saved as a `.pth` file in this folder.
+* **`evaluation/`**: Contains the evaluation scripts (`evaluate.py`) and the auto-generated performance benchmarking reports (`eval_results_{n}.md`).
 
 ⚠️ **WARNING FOR TEAM COLLABORATION** ⚠️
 When pushing to GitHub, **never** push the `.venv/`, `data/`, or `saved_models/` folders. 

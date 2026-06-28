@@ -5,8 +5,8 @@ env/
 .env
 
 # Data and Model Outputs
-data/
-saved_models/
+/data/
+/saved_models/
 
 # Python Cache
 __pycache__/
