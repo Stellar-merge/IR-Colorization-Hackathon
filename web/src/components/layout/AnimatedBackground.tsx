@@ -1,7 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
-
 export function AnimatedBackground() {
   return (
     <div className="fixed inset-0 z-[-1] overflow-hidden bg-background">
@@ -20,45 +18,18 @@ export function AnimatedBackground() {
       />
       
       {/* Animated glowing orb 1 */}
-      <motion.div
-        className="absolute -top-40 -left-40 w-96 h-96 bg-primary/20 rounded-full blur-[120px]"
-        animate={{
-          x: [0, 100, 0],
-          y: [0, 50, 0],
-        }}
-        transition={{
-          duration: 20,
-          repeat: Infinity,
-          ease: "linear",
-        }}
+      <div
+        className="absolute top-[-10%] left-[-10%] w-[40vw] h-[40vw] max-w-[500px] max-h-[500px] bg-primary/20 rounded-full blur-[100px] animate-spotlight-1"
       />
 
       {/* Animated glowing orb 2 */}
-      <motion.div
-        className="absolute top-1/3 -right-40 w-[500px] h-[500px] bg-secondary/10 rounded-full blur-[150px]"
-        animate={{
-          x: [0, -50, 0],
-          y: [0, -100, 0],
-        }}
-        transition={{
-          duration: 25,
-          repeat: Infinity,
-          ease: "linear",
-        }}
+      <div
+        className="absolute top-[20%] right-[-10%] w-[50vw] h-[50vw] max-w-[600px] max-h-[600px] bg-secondary/20 rounded-full blur-[120px] animate-spotlight-2"
       />
       
       {/* Animated glowing orb 3 */}
-      <motion.div
-        className="absolute -bottom-40 left-1/3 w-[600px] h-[600px] bg-accent/10 rounded-full blur-[180px]"
-        animate={{
-          x: [0, 50, -50, 0],
-          y: [0, -50, 50, 0],
-        }}
-        transition={{
-          duration: 30,
-          repeat: Infinity,
-          ease: "linear",
-        }}
+      <div
+        className="absolute bottom-[-10%] left-[20%] w-[45vw] h-[45vw] max-w-[550px] max-h-[550px] bg-accent/20 rounded-full blur-[120px] animate-spotlight-3"
       />
     </div>
   );

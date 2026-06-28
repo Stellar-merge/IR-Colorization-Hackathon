@@ -1,8 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
 import { ArrowRight, Activity } from "lucide-react";
+import Link from "next/link";
+import { AnimatedHeading, FlickerText, RevealSection, FadeCard } from "@/components/animations";
 
 interface HeroSectionProps {
   onRunInferenceClick: () => void;
@@ -11,46 +12,52 @@ interface HeroSectionProps {
 export function HeroSection({ onRunInferenceClick }: HeroSectionProps) {
   return (
     <section className="relative w-full py-24 md:py-32 lg:py-40 overflow-hidden flex flex-col items-center justify-center text-center">
-      <motion.div
-        initial={{ opacity: 1, y: 0 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-        className="container px-4 md:px-6 z-10"
-      >
-        <div className="inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-sm font-medium text-primary mb-8 backdrop-blur-sm">
+      <RevealSection className="container px-4 md:px-6 z-10">
+        <FadeCard className="inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-sm font-medium text-primary mb-8 backdrop-blur-sm">
           <Activity className="mr-2 h-4 w-4" />
-          Mission Control Online
-        </div>
+          <FlickerText delay={0.2}>System Online</FlickerText>
+        </FadeCard>
         
-        <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl max-w-4xl mx-auto text-transparent bg-clip-text bg-gradient-to-b from-foreground to-foreground/60 pb-4">
-          Transform Infrared Satellite Imagery into High-Fidelity RGB Intelligence
-        </h1>
-        
-        <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl mt-4 mb-10">
-          Enhance low-contrast thermal imagery using AI Super Resolution and Pix2Pix-based colorization for improved object interpretation.
-        </p>
-        
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button 
-            size="lg" 
-            onClick={onRunInferenceClick}
-            className="group rounded-full px-8 bg-primary hover:bg-primary/90 text-primary-foreground shadow-[0_0_20px_rgba(0,229,255,0.4)] transition-all hover:shadow-[0_0_30px_rgba(0,229,255,0.6)]"
-          >
-            Run Inference
-            <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
-          </Button>
-          <Button 
-            size="lg" 
-            variant="outline" 
-            className="rounded-full px-8 border-border bg-background/30 backdrop-blur-sm hover:bg-background/50"
-            onClick={() => {
-              window.location.href = "/architecture";
+        <AnimatedHeading className="text-4xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl max-w-4xl mx-auto pb-4">
+          <span className="text-primary">Turn </span>
+          <span 
+            className="bg-clip-text text-transparent animate-rgb-shift"
+            style={{ 
+              backgroundImage: 'linear-gradient(90deg, #ffffff, #666666, #ffffff)',
+              backgroundSize: '300% 100%' 
             }}
+          >Black-and-White</span>
+          <br className="hidden md:block" />
+          <span className="text-primary">Satellite Images into </span>
+          <br className="hidden md:block" />
+          <span 
+            className="bg-clip-text text-transparent animate-rgb-shift"
+            style={{ 
+              backgroundImage: 'linear-gradient(90deg, #ff0000, #00ff00, #0000ff, #ff0000)',
+              backgroundSize: '300% 100%' 
+            }}
+          >Full Color</span>
+        </AnimatedHeading>
+        
+        <FlickerText delay={0.6} className="mx-auto max-w-[700px] text-muted-foreground md:text-xl mt-4 mb-10 block">
+          Use Artificial Intelligence to automatically add realistic colors and enhance details in infrared satellite photos.
+        </FlickerText>
+        
+        <FadeCard className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <a 
+            href="#inference-gateway" 
+            className="h-12 px-8 rounded-full bg-primary text-primary-foreground hover:bg-primary/90 hover:shadow-[0_0_20px_rgba(0,229,255,0.4)] transition-all group inline-flex items-center justify-center text-sm font-medium"
+          >
+            Try it Now <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+          </a>
+          <Link 
+            href="/architecture"
+            className="h-12 px-8 rounded-full border border-primary/20 hover:bg-primary/10 inline-flex items-center justify-center text-sm font-medium"
           >
             View Architecture
-          </Button>
-        </div>
-      </motion.div>
+          </Link>
+        </FadeCard>
+      </RevealSection>
     </section>
   );
 }

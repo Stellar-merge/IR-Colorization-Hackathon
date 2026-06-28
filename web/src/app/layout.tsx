@@ -23,8 +23,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} dark`} suppressHydrationWarning>
-      <body className="min-h-screen bg-background font-sans antialiased text-foreground selection:bg-primary/30 flex flex-col">
+    <html lang="en" className={`${inter.variable} dark scroll-smooth`} suppressHydrationWarning>
+      <body className="min-h-screen bg-background font-sans antialiased text-foreground selection:bg-primary/30 flex flex-col overflow-x-hidden">
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"

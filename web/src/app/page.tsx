@@ -11,6 +11,8 @@ import { useAppStore } from "@/lib/store";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 
+import { AnimatedHeading, FlickerText, RevealSection } from "@/components/animations";
+
 export default function Home() {
   const { 
     isProcessing, 
@@ -24,7 +26,10 @@ export default function Home() {
   const uploadRef = useRef<HTMLDivElement>(null);
 
   const handleRunInferenceClick = () => {
-    uploadRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    if (uploadRef.current) {
+      const y = uploadRef.current.getBoundingClientRect().top + window.scrollY - 100;
+      window.scrollTo({ top: y, behavior: "smooth" });
+    }
   };
 
   const handleUpload = async (file: File) => {
@@ -90,10 +95,10 @@ export default function Home() {
     <div className="flex flex-col items-center w-full px-4 md:px-8 pb-24">
       <HeroSection onRunInferenceClick={handleRunInferenceClick} />
       
-      <div ref={uploadRef} className="w-full max-w-5xl mt-12 mb-24 scroll-mt-24">
-        <h2 className="text-3xl font-bold mb-8 text-center bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
-          Inference Gateway
-        </h2>
+      <div id="inference-gateway" ref={uploadRef} className="w-full max-w-5xl mt-12 mb-24 scroll-mt-24">
+        <AnimatedHeading className="text-3xl font-bold mb-8 text-center bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
+          <FlickerText delay={0.2}>Imagery Reconstruction Terminal</FlickerText>
+        </AnimatedHeading>
         <UploadPanel onUpload={handleUpload} />
       </div>
 
@@ -119,7 +124,7 @@ export default function Home() {
             className="w-full max-w-7xl flex flex-col items-center gap-12 mt-12"
           >
             <div className="w-full text-center">
-              <h2 className="text-3xl font-bold mb-2">Enhancement Results</h2>
+              <h2 className="text-3xl font-bold mb-2 text-primary">Enhancement Results</h2>
               <p className="text-muted-foreground">High-fidelity translation powered by Pix2Pix.</p>
             </div>
             

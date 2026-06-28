@@ -26,7 +26,7 @@ export function PerformanceChart() {
       transition={{ duration: 0.5 }}
       className="w-full"
     >
-      <Card className="bg-card/50 backdrop-blur-sm border-border/50">
+      <Card className="bg-card/50 backdrop-blur-sm border-2 border-border/50 animate-periodic-glow">
         <CardHeader>
           <CardTitle>Training Loss Convergence</CardTitle>
           <CardDescription>Generator (U-Net) vs Discriminator (PatchGAN) over 100 epochs.</CardDescription>

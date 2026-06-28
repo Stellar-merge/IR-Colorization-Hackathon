@@ -6,8 +6,8 @@ import { ArrowRight, Image as ImageIcon, Layers, Cpu, CheckCircle } from "lucide
 export function PipelineAnimation() {
   const steps = [
     { name: "Infrared Input", icon: <ImageIcon className="w-6 h-6" /> },
-    { name: "SR Enhancement", icon: <Layers className="w-6 h-6" /> },
-    { name: "Pix2Pix GAN", icon: <Cpu className="w-6 h-6" /> },
+    { name: "Enhance Details", icon: <Layers className="w-6 h-6" /> },
+    { name: "AI Colorization", icon: <Cpu className="w-6 h-6" /> },
     { name: "RGB Output", icon: <CheckCircle className="w-6 h-6 text-primary" /> },
   ];
 

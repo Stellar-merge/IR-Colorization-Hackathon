@@ -5,12 +5,6 @@ export function Footer() {
         <div>
           &copy; {new Date().getFullYear()} Bharatiya Antariksh Hackathon
         </div>
-        <div className="flex gap-4 mt-2 md:mt-0">
-          <span>Built with Next.js + Tailwind + PyTorch</span>
-          <a href="https://github.com/Stellar-merge/IR-Colorization-Hackathon" className="hover:text-primary transition-colors">
-            GitHub
-          </a>
-        </div>
       </div>
     </footer>
   );
