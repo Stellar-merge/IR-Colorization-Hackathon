@@ -15,10 +15,26 @@ def calculate_psnr(img1, img2):
     psnr = 20 * torch.log10(max_pixel / torch.sqrt(mse))
     return psnr.item()
 
+import numpy as np
+from skimage.metrics import structural_similarity
+
 def calculate_ssim(img1, img2):
     """
-    Structural Similarity Index - placeholder for hackathon.
-    Normally imported from skimage.metrics or a specialized PyTorch library.
+    Structural Similarity Index.
+    Assumes img1 and img2 are PyTorch tensors.
     """
-    # Requires a specialized implementation in PyTorch, or using skimage
-    pass
+    # Convert tensors to numpy arrays and change shape to [H, W, C] for skimage
+    img1_np = img1.detach().cpu().numpy().transpose(1, 2, 0)
+    img2_np = img2.detach().cpu().numpy().transpose(1, 2, 0)
+    
+    # Calculate SSIM 
+    data_range = img2_np.max() - img2_np.min()
+    if data_range == 0:
+        data_range = 1.0 # fallback
+
+    ssim_value = structural_similarity(
+        img1_np, img2_np, 
+        data_range=data_range,
+        channel_axis=-1
+    )
+    return ssim_value
