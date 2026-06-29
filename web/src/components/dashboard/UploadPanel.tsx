@@ -56,7 +56,7 @@ export function UploadPanel({ onUpload }: UploadPanelProps) {
   return (
     <div className="w-full max-w-2xl mx-auto p-1">
       <FadeCard 
-        className={`relative overflow-hidden rounded-2xl border-2 border-dashed p-10 transition-colors backdrop-blur-md bg-card
+        className={`relative overflow-hidden rounded-2xl border-2 border-dashed p-6 md:p-10 transition-colors backdrop-blur-md bg-card
           ${isDragging ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"}
         `}
       >
@@ -72,15 +72,15 @@ export function UploadPanel({ onUpload }: UploadPanelProps) {
         <div className="relative z-10 flex flex-col items-center justify-center text-center pointer-events-none">
           {!selectedFile ? (
             <>
-              <div className="mb-6 p-4 rounded-full bg-background border border-border shadow-lg">
-                <UploadCloud className="w-10 h-10 text-primary" />
+              <div className="mb-4 md:mb-6 p-4 rounded-full bg-background border border-border shadow-lg">
+                <UploadCloud className="w-8 h-8 md:w-10 md:h-10 text-primary" />
               </div>
-              <h3 className="text-xl font-semibold mb-2 pointer-events-auto">
+              <h3 className="text-lg md:text-xl font-semibold mb-2 pointer-events-auto">
                 <FlickerText delay={0.1}>Upload Infrared Image</FlickerText>
               </h3>
-              <p className="text-muted-foreground mb-6 text-sm max-w-sm pointer-events-auto">
+              <p className="text-muted-foreground mb-4 md:mb-6 text-sm max-w-sm pointer-events-auto">
                 <FlickerText delay={0.2}>
-                  Drag and drop your satellite IR imagery here, or click to browse. Supports PNG, JPG, and TIFF.
+                  Drag and drop your satellite IR imagery here, or tap to browse. Supports PNG, JPG, and TIFF.
                 </FlickerText>
               </p>
               
@@ -91,7 +91,7 @@ export function UploadPanel({ onUpload }: UploadPanelProps) {
                   accept=".png,.jpg,.jpeg,.tiff" 
                   onChange={handleFileInput}
                 />
-                <div className="inline-flex h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring">
+                <div className="inline-flex h-12 md:h-10 items-center justify-center rounded-md bg-primary px-8 text-sm font-medium text-primary-foreground shadow transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring w-full md:w-auto">
                   Browse Files
                 </div>
               </label>

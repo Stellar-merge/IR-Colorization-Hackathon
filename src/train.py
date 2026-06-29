@@ -60,7 +60,7 @@ def train():
     optimizer_D = optim.Adam(discriminator.parameters(), lr=lr, betas=(0.5, 0.999))
     
     # 3. Data Loading
-    data_dir = "data"
+    data_dir = os.path.join("data", "train")
     os.makedirs(os.path.join(data_dir, "ir"), exist_ok=True)
     os.makedirs(os.path.join(data_dir, "rgb"), exist_ok=True)
     

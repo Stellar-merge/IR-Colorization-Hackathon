@@ -16,12 +16,18 @@ dependencies = [
     "earthengine-api",
     "ee>=0.2",
     "python-dotenv>=1.2.1",
+<<<<<<< HEAD
     "seaborn>=0.13.2",
     "pandas>=2.3.3",
     "torchmetrics>=1.8.2",
     "rich>=15.0.0",
     "pytorch-fid>=0.3.0",
     "lpips>=0.1.4",
+=======
+    "fastapi",
+    "uvicorn",
+    "python-multipart",
+>>>>>>> 85e741e951eaa75693abe36a0384dbf209e08c74
 ]
 
 [[tool.uv.index]]

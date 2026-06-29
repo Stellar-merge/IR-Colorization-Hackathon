@@ -23,75 +23,80 @@ export function PerformanceChart() {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
-      className="w-full"
+      transition={{ duration: 0.5, delay: 0.3 }}
+      className="w-full h-full"
     >
-      <Card className="bg-card/50 backdrop-blur-sm border-2 border-border/50 animate-periodic-glow">
-        <CardHeader>
-          <CardTitle>Training Loss Convergence</CardTitle>
-          <CardDescription>Generator (U-Net) vs Discriminator (PatchGAN) over 100 epochs.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="h-[300px] w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={data} margin={{ top: 5, right: 20, bottom: 5, left: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" vertical={false} />
-                <XAxis 
-                  dataKey="epoch" 
-                  stroke="rgba(255,255,255,0.5)" 
-                  fontSize={12}
-                  tickLine={false}
-                  axisLine={false}
-                />
-                <YAxis 
-                  yAxisId="left"
-                  stroke="rgba(255,255,255,0.5)" 
-                  fontSize={12}
-                  tickLine={false}
-                  axisLine={false}
-                />
-                <YAxis 
-                  yAxisId="right"
-                  orientation="right"
-                  stroke="rgba(255,255,255,0.5)" 
-                  fontSize={12}
-                  tickLine={false}
-                  axisLine={false}
-                />
-                <Tooltip 
-                  contentStyle={{ 
-                    backgroundColor: 'rgba(3,7,18,0.9)', 
-                    borderColor: 'rgba(255,255,255,0.1)',
-                    borderRadius: '8px',
-                    boxShadow: '0 4px 20px rgba(0,0,0,0.5)'
-                  }}
-                  itemStyle={{ color: '#fff' }}
-                />
-                <Legend iconType="circle" wrapperStyle={{ paddingTop: '20px' }} />
-                <Line 
-                  yAxisId="left"
-                  type="monotone" 
-                  dataKey="generatorLoss" 
-                  name="Generator Loss"
-                  stroke="#00E5FF" 
-                  strokeWidth={3}
-                  dot={{ r: 4, fill: "#030712", strokeWidth: 2 }}
-                  activeDot={{ r: 6, fill: "#00E5FF" }}
-                />
-                <Line 
-                  yAxisId="right"
-                  type="monotone" 
-                  dataKey="discriminatorLoss" 
-                  name="Discriminator Loss"
-                  stroke="#2563EB" 
-                  strokeWidth={3}
-                  dot={{ r: 4, fill: "#030712", strokeWidth: 2 }}
-                  activeDot={{ r: 6, fill: "#2563EB" }}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-        </CardContent>
+      <Card className="h-full bg-card/40 backdrop-blur-md border border-border/50 flex flex-col p-4">
+        <div className="flex items-center justify-between mb-2 border-b border-border/50 pb-2">
+          <h3 className="text-[14px] font-semibold text-foreground">Training Loss Curve</h3>
+          <span className="text-[12px] text-muted-foreground">Epoch 100</span>
+        </div>
+        <div className="flex-1 w-full min-h-[160px]">
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={data} margin={{ top: 5, right: 0, bottom: -10, left: -25 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
+              <XAxis 
+                dataKey="epoch" 
+                stroke="rgba(255,255,255,0.3)" 
+                fontSize={10}
+                tickLine={false}
+                axisLine={false}
+              />
+              <YAxis 
+                yAxisId="left"
+                stroke="rgba(255,255,255,0.3)" 
+                fontSize={10}
+                tickLine={false}
+                axisLine={false}
+                width={30}
+              />
+              <YAxis 
+                yAxisId="right"
+                orientation="right"
+                stroke="rgba(255,255,255,0.3)" 
+                fontSize={10}
+                tickLine={false}
+                axisLine={false}
+                width={30}
+              />
+              <Tooltip 
+                contentStyle={{ 
+                  backgroundColor: 'rgba(3,7,18,0.9)', 
+                  borderColor: 'rgba(255,255,255,0.1)',
+                  borderRadius: '6px',
+                  boxShadow: '0 4px 15px rgba(0,0,0,0.5)',
+                  fontSize: '12px'
+                }}
+                itemStyle={{ color: '#fff' }}
+              />
+              <Legend 
+                iconType="circle" 
+                wrapperStyle={{ fontSize: '10px', paddingTop: '10px' }} 
+                iconSize={6}
+              />
+              <Line 
+                yAxisId="left"
+                type="monotone" 
+                dataKey="generatorLoss" 
+                name="Generator"
+                stroke="#00E5FF" 
+                strokeWidth={2}
+                dot={false}
+                activeDot={{ r: 4, fill: "#00E5FF" }}
+              />
+              <Line 
+                yAxisId="right"
+                type="monotone" 
+                dataKey="discriminatorLoss" 
+                name="Discriminator"
+                stroke="#2563EB" 
+                strokeWidth={2}
+                dot={false}
+                activeDot={{ r: 4, fill: "#2563EB" }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
       </Card>
     </motion.div>
   );

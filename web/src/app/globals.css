@@ -235,3 +235,34 @@
 .animate-periodic-glow {
   animation: periodic-border-glow 6s ease-in-out infinite;
 }
+
+@keyframes particle-flow-v {
+  0% { transform: translateY(-100%); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateY(100%); opacity: 0; }
+}
+
+@keyframes particle-flow-h {
+  0% { transform: translateX(-100%); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateX(100%); opacity: 0; }
+}
+
+.animate-particle-v {
+  animation: particle-flow-v 2s linear infinite;
+}
+
+.animate-particle-h {
+  animation: particle-flow-h 2s linear infinite;
+}
+
+@keyframes pulse-travel {
+  0% { left: 0%; opacity: 0; box-shadow: 0 0 0px rgba(0, 229, 255, 0); }
+  10% { opacity: 1; box-shadow: 0 0 15px rgba(0, 229, 255, 0.8); }
+  90% { opacity: 1; box-shadow: 0 0 15px rgba(0, 229, 255, 0.8); }
+  100% { left: 100%; opacity: 0; box-shadow: 0 0 0px rgba(0, 229, 255, 0); }
+}
+
+.animate-pulse-travel {
+  animation: pulse-travel 8s linear infinite;
+}

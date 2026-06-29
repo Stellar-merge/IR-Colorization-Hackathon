@@ -12,14 +12,33 @@ export async function POST(request: Request) {
       );
     }
 
-    // Simulate 4-second inference time
-    await new Promise((resolve) => setTimeout(resolve, 4000));
-
-    // In a real implementation, this is where we would call our PyTorch model API
-    // using fetch("http://localhost:8000/predict", ...)
+    const pythonApiUrl = process.env.PYTHON_API_URL || "http://127.0.0.1:8000/predict";
     
-    // For now, we return mock data with placeholder images 
-    // (In actual implementation, we would return base64 or a blob URL generated from the PyTorch inference)
+    try {
+      // Forward the upload request to the FastAPI Python server
+      const backendResponse = await fetch(pythonApiUrl, {
+        method: "POST",
+        body: formData,
+        // Set a reasonable timeout so we don't hang indefinitely if Python is loading a huge model
+        signal: AbortSignal.timeout(30000), 
+      });
+
+      if (backendResponse.ok) {
+        const data = await backendResponse.json();
+        return NextResponse.json(data);
+      } else {
+        const errorText = await backendResponse.text();
+        console.warn(`[API] Python backend returned error status ${backendResponse.status}: ${errorText}`);
+      }
+    } catch (fetchError) {
+      console.warn(
+        `[API] Could not connect to Python backend at ${pythonApiUrl}. Falling back to demo mode.`,
+        fetchError
+      );
+    }
+
+    // Fallback Mock Mode: Simulate 4-second inference time and return placeholders
+    await new Promise((resolve) => setTimeout(resolve, 3000));
     return NextResponse.json({
       images: {
         enhanced: "/placeholder-enhanced.jpg",
@@ -30,10 +49,12 @@ export async function POST(request: Request) {
         ssim: 0.947,
         fid: 19.4,
         inferenceTime: 0.86,
+        isDemoFallback: true,
       }
     });
 
   } catch (error) {
+    console.error("[API] Critical error in Next.js inference route:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }

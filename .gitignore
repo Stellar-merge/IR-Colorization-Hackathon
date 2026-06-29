@@ -6,8 +6,13 @@ env/
 
 # Data and Model Outputs
 /data/
+<<<<<<< HEAD
 saved_models/
 output_samples/
+=======
+/saved_models/
+/eval_results/
+>>>>>>> 85e741e951eaa75693abe36a0384dbf209e08c74
 
 # Python Cache
 __pycache__/
