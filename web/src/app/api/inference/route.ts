@@ -39,7 +39,6 @@ export async function POST(request: Request) {
 
     // Fallback Mock Mode: Simulate 4-second inference time and return placeholders
     await new Promise((resolve) => setTimeout(resolve, 3000));
-
     return NextResponse.json({
       images: {
         enhanced: "/placeholder-enhanced.jpg",
