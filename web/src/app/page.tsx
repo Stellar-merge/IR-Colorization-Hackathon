@@ -55,23 +55,14 @@ export default function Home() {
 
       const data = await response.json();
       
-      // Mock API simulation logic
-      setTimeout(() => {
-        setProcessing(false);
-        setResults({
-          original: URL.createObjectURL(file),
-          enhanced: "/samples/ir/tile_0000.png",
-          generated: "/samples/rgb/tile_0000.png",
-          groundTruth: "/samples/rgb/tile_0000.png",
-        });
-        setMetrics({
-          psnr: 32.45,
-          ssim: 0.945,
-          fid: 18.7,
-          inferenceTime: 0.85,
-        });
-        toast.success("Image successfully processed!");
-      }, 4500);
+      setProcessing(false);
+      setResults({
+        original: URL.createObjectURL(file),
+        enhanced: data.images.enhanced,
+        generated: data.images.generated,
+      });
+      setMetrics(data.metrics);
+      toast.success("Image successfully processed!");
       
     } catch (error) {
       toast.error("Failed to process image. Please try again.");
@@ -81,11 +72,11 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-start min-h-screen pt-12 pb-24 px-4 sm:px-6 relative w-full overflow-hidden">
+    <div className="flex flex-col items-center justify-start min-h-screen pt-4 pb-12 px-4 sm:px-6 relative w-full overflow-hidden">
       <HeroSection onRunInferenceClick={handleRunInferenceClick} />
       
-      <div id="inference-gateway" ref={uploadRef} className="w-full max-w-4xl flex flex-col items-center justify-center z-10 space-y-8 mt-12 mb-8">
-        <AnimatedHeading className="text-3xl font-bold mb-8 text-center bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
+      <div id="inference-gateway" ref={uploadRef} className="w-full max-w-4xl flex flex-col items-center justify-center z-10 space-y-4 mt-6 mb-4">
+        <AnimatedHeading className="text-2xl font-bold mb-4 text-center bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
           <FlickerText delay={0.2}>Imagery Reconstruction Terminal</FlickerText>
         </AnimatedHeading>
         <UploadPanel onUpload={handleUpload} />
