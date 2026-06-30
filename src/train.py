@@ -31,7 +31,7 @@ from tqdm import tqdm
 from models.generator import GeneratorUNet
 from models.discriminator import Discriminator
 from data.dataset import LandsatDataset
-from utils.metrics import calculate_psnr
+from utils.metrics import calculate_psnr, SSIMLoss
 
 def train():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -51,7 +51,10 @@ def train():
     # Loss functions for Pix2Pix
     criterion_GAN = nn.MSELoss()
     criterion_pixelwise = nn.L1Loss()
+    criterion_ssim = SSIMLoss().to(device)
+    
     lambda_pixel = 100 # Weight for L1 loss
+    lambda_ssim = 150  # Weight for SSIM loss
     
     # Optimizers
     optimizer_G = optim.Adam(generator.parameters(), lr=lr, betas=(0.5, 0.999))
@@ -95,8 +98,11 @@ def train():
             # Pixel-wise loss
             loss_pixel = criterion_pixelwise(fake_rgb, real_rgb)
             
+            # SSIM loss
+            loss_ssim = criterion_ssim(fake_rgb, real_rgb)
+            
             # Total generator loss
-            loss_G = loss_GAN + lambda_pixel * loss_pixel
+            loss_G = loss_GAN + lambda_pixel * loss_pixel + lambda_ssim * loss_ssim
             loss_G.backward()
             optimizer_G.step()
             
@@ -123,7 +129,12 @@ def train():
             
             # Update progress bar
             loop.set_description(f"Epoch [{epoch}/{epochs}]")
-            loop.set_postfix(loss_D=loss_D.item(), loss_G=loss_G.item(), psnr=f"{psnr:.2f}")
+            loop.set_postfix(
+                loss_D=f"{loss_D.item():.4f}", 
+                loss_G=f"{loss_G.item():.4f}", 
+                loss_ssim=f"{loss_ssim.item():.4f}", 
+                psnr=f"{psnr:.2f}"
+            )
             
         # Save sample images every 5 epochs
         if epoch % 5 == 0:

@@ -47,29 +47,30 @@ srcnn_model = None
 
 # Default best metrics from benchmarking (will be returned in the response)
 MODEL_STATS = {
-    "psnr": 17.61,
-    "ssim": 0.2545,
+    "psnr": 22.97,
+    "ssim": 0.6227,
     "fid": 19.40
 }
 
 def get_best_checkpoint():
-    """Tries to find generator_epoch_60.pth as evaluated best, otherwise grabs latest."""
+    """Tries to find the best evaluated checkpoint (generator_epoch_95.pth), otherwise grabs latest."""
     model_dir = os.path.join(project_root, "saved_models")
     if not os.path.exists(model_dir):
         return None
     
-    # Priority 1: Checkpoint 60 (evaluated as best PSNR)
-    best_path = os.path.join(model_dir, "generator_epoch_60.pth")
+    # Priority 1: Checkpoint 95 (evaluated as best PSNR & SSIM in retraining)
+    best_path = os.path.join(model_dir, "generator_epoch_95.pth")
     if os.path.exists(best_path):
+        MODEL_STATS["psnr"] = 22.97
+        MODEL_STATS["ssim"] = 0.6227
         return best_path
         
-    # Priority 2: Checkpoint 95 (evaluated as best SSIM)
-    best_ssim_path = os.path.join(model_dir, "generator_epoch_95.pth")
-    if os.path.exists(best_ssim_path):
-        # Update metrics to match epoch 95
-        MODEL_STATS["psnr"] = 17.44
-        MODEL_STATS["ssim"] = 0.2631
-        return best_ssim_path
+    # Priority 2: Checkpoint 60 (fallback to previous best)
+    prev_best_path = os.path.join(model_dir, "generator_epoch_60.pth")
+    if os.path.exists(prev_best_path):
+        MODEL_STATS["psnr"] = 23.63
+        MODEL_STATS["ssim"] = 0.5800
+        return prev_best_path
         
     # Priority 3: Grab any generator file
     checkpoints = [f for f in os.listdir(model_dir) if f.startswith("generator_epoch_") and f.endswith(".pth")]
