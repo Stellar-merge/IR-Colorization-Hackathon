@@ -58,7 +58,7 @@ export function MetricsPanel({ metrics }: MetricsPanelProps) {
       </div>
 
       <div className="flex-1 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-1 gap-3">
-        {items.map((item, i) => (
+        {items.map((item) => (
           <div key={item.label} className="group flex items-center justify-between p-3 rounded-xl bg-background/30 border border-transparent hover:border-cyan-500/30 hover:bg-cyan-950/20 transition-colors">
             <div className="flex items-center gap-3">
               <div className="p-2 rounded-lg bg-background/50 border border-border/30">

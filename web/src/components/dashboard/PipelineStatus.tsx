@@ -24,7 +24,7 @@ export function PipelineStatus() {
         <span className="text-[12px] text-green-400 font-medium">All Systems Nominal</span>
       </div>
       <div className="flex-1 grid grid-cols-2 gap-y-3 gap-x-4 items-center">
-        {statuses.map((status, i) => (
+        {statuses.map((status) => (
           <div key={status.label} className="flex items-center gap-2 text-[12px] text-foreground">
             {status.active ? (
               <CheckCircle2 className="w-3.5 h-3.5 text-green-400" />

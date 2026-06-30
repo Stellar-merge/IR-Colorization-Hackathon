@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Download, Maximize2, Columns, X, Info } from "lucide-react";
+import { Download, Maximize2, Columns, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { AnimatedImage } from "@/components/animations";
 import { motion, AnimatePresence } from "framer-motion";
@@ -54,7 +54,7 @@ export function ImageComparison({ images }: ImageComparisonProps) {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: i * 0.1 }}
             key={card.id}
-            className="group relative rounded-xl overflow-hidden border border-border/50 bg-card aspect-[16/10] min-w-full md:min-w-0 snap-center w-full"
+            className="group relative rounded-xl overflow-hidden border border-border/50 bg-card aspect-16/10 min-w-full md:min-w-0 snap-center w-full"
           >
             {/* Action Buttons Toolbar */}
             <div className="absolute top-3 right-3 z-50 flex gap-2 opacity-100 md:opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -89,7 +89,7 @@ export function ImageComparison({ images }: ImageComparisonProps) {
               {card.src ? (
                 <AnimatedImage src={card.src} alt={card.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
               ) : (
-                <div className="w-full h-full bg-gradient-to-br from-muted to-background animate-pulse" />
+                <div className="w-full h-full bg-linear-to-br from-muted to-background animate-pulse" />
               )}
             </div>
             
@@ -103,7 +103,7 @@ export function ImageComparison({ images }: ImageComparisonProps) {
         {activeLightboxImage && (
           <motion.div 
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-background/60 backdrop-blur-sm"
+            className="fixed inset-0 z-100 flex flex-col items-center justify-center bg-background/60 backdrop-blur-sm"
             onClick={() => setActiveLightboxImage(null)}
           >
             <div className="max-w-[90vw] max-h-[90vh] rounded-xl relative border border-white/10 shadow-2xl bg-black overflow-hidden" onClick={(e) => e.stopPropagation()}>
@@ -124,7 +124,7 @@ export function ImageComparison({ images }: ImageComparisonProps) {
         {compareMode && (
           <motion.div 
             initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-background/80 backdrop-blur-md"
+            className="fixed inset-0 z-100 flex flex-col items-center justify-center bg-background/80 backdrop-blur-md"
             onClick={() => setCompareMode(null)}
           >
             <div className="w-[90vw] max-w-5xl aspect-video rounded-xl relative border border-white/10 shadow-2xl bg-black overflow-hidden select-none" onClick={(e) => e.stopPropagation()}>

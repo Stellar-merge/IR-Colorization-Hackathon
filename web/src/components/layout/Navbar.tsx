@@ -5,7 +5,6 @@ import Link from "next/link";
 import { Satellite, Menu, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { ThemeToggle } from "./ThemeToggle";
 import { motion, AnimatePresence } from "framer-motion";
 
 export function Navbar() {
@@ -71,7 +70,7 @@ export function Navbar() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: "100%" }}
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
-            className="fixed top-0 left-0 w-screen h-[100dvh] z-40 flex flex-col bg-background pt-24 px-6 lg:hidden"
+            className="fixed top-0 left-0 w-screen h-dvh z-40 flex flex-col bg-background pt-24 px-6 lg:hidden"
           >
             <nav className="flex flex-col gap-6">
               {links.map((link) => (

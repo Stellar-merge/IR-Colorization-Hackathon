@@ -25,7 +25,7 @@ export function RevealSection({ children, className, delay = 0 }: { children: Re
 }
 
 // 2. FlickerText: Standard text span wrapper (flicker removed)
-export function FlickerText({ children, className, delay = 0, style }: { children: React.ReactNode, className?: string, delay?: number, style?: React.CSSProperties }) {
+export function FlickerText({ children, className, delay, style }: { children: React.ReactNode, className?: string, delay?: number, style?: React.CSSProperties }) {
   return (
     <span 
       className={className}

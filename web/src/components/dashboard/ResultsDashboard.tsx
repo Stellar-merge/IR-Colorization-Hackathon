@@ -5,13 +5,21 @@ import { motion } from "framer-motion";
 import { CheckCircle2, Download, RefreshCw, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+interface MetricsData {
+  psnr: number;
+  ssim: number;
+  fid: number;
+  inferenceTime: number;
+  isDemoFallback?: boolean;
+}
+
 interface ResultsDashboardProps {
   results: {
     original: string;
     enhanced: string;
     generated: string;
   };
-  metrics?: any;
+  metrics?: MetricsData | null;
 }
 
 export function ResultsDashboard({ results, metrics }: ResultsDashboardProps) {
@@ -113,7 +121,7 @@ export function ResultsDashboard({ results, metrics }: ResultsDashboardProps) {
           </div>
 
           {/* Interactive Before/After Drag Slider */}
-          <div className="relative w-full aspect-[16/10] sm:aspect-[16/9.5] rounded-xl overflow-hidden border border-white/10 bg-black shadow-2xl select-none group/slider">
+          <div className="relative w-full aspect-16/10 sm:aspect-16/9.5 rounded-xl overflow-hidden border border-white/10 bg-black shadow-2xl select-none group/slider">
             {/* Base Image (Underlay Output) */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img 

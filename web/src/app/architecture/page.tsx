@@ -2,12 +2,11 @@
 
 import React, { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Satellite, Layers, Sparkles, Network, ShieldCheck, Image as ImageIcon, ArrowRight, ArrowDown } from "lucide-react";
+import { Satellite, Layers, Sparkles, Network, ShieldCheck, Image as ImageIcon } from "lucide-react";
 import { motion } from "framer-motion";
 
 export default function ArchitecturePage() {
   const [hoveredNode, setHoveredNode] = useState<number | null>(null);
-  const [hoveredCard, setHoveredCard] = useState<number | null>(null);
 
   const steps = [
     {
@@ -118,8 +117,6 @@ export default function ArchitecturePage() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: idx * 0.15, ease: "easeOut" }}
               className="relative group perspective-1000"
-              onMouseEnter={() => setHoveredCard(step.id)}
-              onMouseLeave={() => setHoveredCard(null)}
             >
               <Card className="h-full bg-card/40 backdrop-blur-md border-border/50 transition-all duration-300 transform group-hover:-translate-y-2 group-hover:shadow-[0_0_20px_rgba(34,211,238,0.4)] group-hover:border-cyan-400/50">
                 <CardHeader className="relative">
@@ -168,12 +165,12 @@ export default function ArchitecturePage() {
           <div className="relative flex flex-col md:flex-row justify-between items-center w-full gap-8 md:gap-0">
             {/* Horizontal Line Background (Desktop) */}
             <div className="hidden md:block absolute top-1/2 left-[5%] right-[5%] h-1.5 border border-cyan-400/50 bg-background/50 -translate-y-1/2 z-0 rounded-full overflow-hidden">
-              <div className={`absolute top-0 bottom-0 w-32 bg-gradient-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_15px_#00E5FF] animate-pulse-travel ${hoveredNode !== null ? 'animation-play-state-paused opacity-20' : ''}`} />
+              <div className={`absolute top-0 bottom-0 w-32 bg-linear-to-r from-transparent via-cyan-400 to-transparent shadow-[0_0_15px_#00E5FF] animate-pulse-travel ${hoveredNode !== null ? 'animation-play-state-paused opacity-20' : ''}`} />
             </div>
             
             {/* Vertical Line Background (Mobile) */}
             <div className="md:hidden absolute left-1/2 top-[5%] bottom-[5%] w-1.5 border border-cyan-400/50 bg-background/50 -translate-x-1/2 z-0 rounded-full overflow-hidden">
-               <div className={`absolute left-0 right-0 h-32 bg-gradient-to-b from-transparent via-cyan-400 to-transparent shadow-[0_0_15px_#00E5FF] animate-particle-v ${hoveredNode !== null ? 'animation-play-state-paused opacity-20' : ''}`} />
+               <div className={`absolute left-0 right-0 h-32 bg-linear-to-b from-transparent via-cyan-400 to-transparent shadow-[0_0_15px_#00E5FF] animate-particle-v ${hoveredNode !== null ? 'animation-play-state-paused opacity-20' : ''}`} />
             </div>
 
             {timelineDetails.map((node, index) => (

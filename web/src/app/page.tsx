@@ -76,7 +76,7 @@ export default function Home() {
       <HeroSection onRunInferenceClick={handleRunInferenceClick} />
       
       <div id="inference-gateway" ref={uploadRef} className="w-full max-w-4xl flex flex-col items-center justify-center z-10 space-y-4 mt-6 mb-4">
-        <AnimatedHeading className="text-2xl font-bold mb-4 text-center bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
+        <AnimatedHeading className="text-2xl font-bold mb-4 text-center bg-clip-text text-transparent bg-linear-to-r from-primary to-accent">
           <FlickerText delay={0.2}>Imagery Reconstruction Terminal</FlickerText>
         </AnimatedHeading>
         <UploadPanel onUpload={handleUpload} />

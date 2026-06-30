@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
-import { ArrowRight, Activity, Database, Cpu, Play } from "lucide-react";
+import { Activity, Database, Cpu, Play } from "lucide-react";
 import Link from "next/link";
 import { AnimatedHeading, FlickerText, RevealSection, FadeCard } from "@/components/animations";
 
@@ -178,7 +177,7 @@ export function HeroSection({ onRunInferenceClick }: HeroSectionProps) {
               <span className="text-[9px] font-mono text-muted-foreground">DRAG SLIDER TO COLORIZE</span>
             </div>
             
-            <div className="relative w-full aspect-[16/10] sm:aspect-[16/9.5] rounded-xl overflow-hidden border border-white/10 bg-black shadow-2xl select-none group/slider">
+            <div className="relative w-full aspect-16/10 sm:aspect-16/9.5 rounded-xl overflow-hidden border border-white/10 bg-black shadow-2xl select-none group/slider">
               {/* Underlay (RGB Color) */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img 
