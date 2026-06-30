@@ -33,53 +33,31 @@ cd IR-Colorization-Hackathon
 ```
 
 ### Step 2: Install Dependencies
-Open your terminal in the project folder and run:
+Open your terminal in the project root folder and run:
 ```bash
 uv sync
 ```
-*This will automatically create an isolated virtual environment (`.venv`) and install PyTorch (with CUDA support!) and all other dependencies.*
+*This will automatically create an isolated virtual environment (`.venv`) and install PyTorch (with CUDA support!) and all other backend dependencies.*
 
-### Step 3: Set up your Google Earth Engine Credentials
-We provide an automated script to download training data directly from Google Earth Engine.
-1. Create a file named `.env` in the root of the project.
-2. Add your Google Cloud Project ID to it like this:
-   ```env
-   EE_PROJECT_ID=your-google-cloud-project-id
-   ```
-   *(You can look at `.env.example` if you forget!)*
-3. Run the download script to fetch the imagery:
-   ```bash
-   uv run python src/data/download_gee.py
-   ```
+### Step 3: Run the Web UI & Model API Server
+The project includes an interactive web dashboard built with Next.js that communicates with a FastAPI deep learning inference backend.
 
-### Step 4: Train the Model
-Once your data is downloaded into the `data/ir/` and `data/rgb/` folders, you can start training the AI!
-
+#### 1. Start the Python Inference API Server
+Open a terminal in the root of the project and run:
 ```bash
-uv run python src/train.py
+uv run python src/serve.py
 ```
+*This starts the FastAPI server at `http://127.0.0.1:8000`. It loads the PyTorch model weights once into memory (utilizing GPU/CUDA acceleration if available) for instant, sub-second colorization and detail enhancement.*
 
-**Note on Windows/OpenBLAS Threading:**
-Sometimes PyTorch on Windows crashes due to OpenBLAS memory allocation. We have built-in a flag that limits the threads to `1` to prevent this. It is enabled by default. If you want to disable the thread limit to speed things up (if your system handles it), you can run:
+#### 2. Start the Next.js Web Frontend
+Open a separate terminal window, navigate to the `web` folder, and run:
 ```bash
-uv run python src/train.py --limit_threads=false
+cd web
+npm run dev
 ```
+*This starts the Next.js development server at `http://localhost:3000`. Open this URL in your web browser to access the imagery reconstruction portal.*
 
-### Step 5: Evaluate Checkpoints & Performance Benchmarking
-To identify the best performing model from your training runs, you can benchmark all saved checkpoints against Peak Signal-to-Noise Ratio (**PSNR**) and Structural Similarity Index (**SSIM**) metrics.
-
-Run the automated evaluation runner:
-```bash
-uv run python evaluation/evaluate.py
-```
-
-**Benchmarking Workflow:**
-* **Auto-scan Checkpoints**: The runner scans the `saved_models/` folder and orders all checkpoints sequentially by training epoch.
-* **Metric Computation**: It computes structural coherence (SSIM) and color-matching accuracy (PSNR) compared to ground-truth RGB imagery.
-* **Auto-generated Reports**: The script dynamically outputs a benchmark table to the console and generates a sequential markdown report at `eval_results/eval_results_{n}.md` (e.g., `eval_results_0.md`, `eval_results_1.md`) so you can track improvement across runs.
-* **Best Model Selection**: Use the summary at the bottom of the generated report to choose the best weights for deployment.
-
-### Step 6: Offline Single-Image Prediction (CLI)
+### Step 4: Offline Single-Image Prediction (CLI)
 You can run colorization and detail enhancement on any raw IR image directly from your terminal using the offline prediction script:
 
 ```bash
@@ -88,30 +66,60 @@ uv run python src/predict.py --image path/to/your/image.png
 * **Weights Resolution**: The script automatically scans your `saved_models/` directory, selects the latest checkpoint, and saves both the structural-enhanced IR and colorized RGB outputs directly into `output_samples/`.
 * **Detail Fallback**: If no SRCNN weights are provided, it automatically applies advanced CLAHE & Unsharp Masking filters to enhance structural details.
 
-### Step 7: Launch the Web UI & Model API Server
-The project includes a web dashboard built with Next.js that communicates with a FastAPI model-serving backend.
+---
 
-1. **Start the Python Inference API Server**:
-   ```bash
-   uv run python src/serve.py
-   ```
-   *This starts the FastAPI server at `http://127.0.0.1:8000`. The server loads the model once into memory (utilizing GPU CUDA acceleration if available) for instant, sub-second responses.*
+## 💻 Monitoring Connection Status (Live vs. Demo)
 
-2. **Start the Next.js Web Frontend**:
-   Open a separate terminal window and run:
-   ```bash
-   cd web
-   npm run dev
-   ```
-   *This starts the Next.js development server. Open [http://localhost:3000](http://localhost:3000) in your browser to view the interactive imagery reconstruction portal!*
+To ensure that your frontend is successfully communicating with your PyTorch backend, look at the **Reconstruction Console** header after processing an image:
+* **🟢 Live Backend**: Indicates a successful connection to the FastAPI server running on port 8000. It uses actual PyTorch model inference (or classical fallback if weights are missing).
+* **🟡 Demo Fallback**: Indicates the frontend could not reach the FastAPI server and has automatically fallen back to the offline mock simulation to prevent the application from hanging.
 
 ---
 
-## 📁 Where do my files go?
+## 🏋️‍♂️ Model Training & Dataset Creation
+If you want to ingest new training datasets from Google Earth Engine, train the models, and benchmark evaluation checkpoints, please see our separate [Model Training & Evaluation Guide](file:///d:/Coding_local/IR_colorizing_model/IR-Colorization-Hackathon/training.md).
+
+---
+
+## 🛠️ Troubleshooting Port Conflicts (Error `10048`)
+
+If you see an error like:
+> `[Errno 10048] error while attempting to bind on address ('127.0.0.1', 8000): only one usage of each socket address is normally permitted`
+
+This means another Python process (or previous server run) is already listening on port 8000. Follow these steps to free up the port:
+
+### On Windows (PowerShell)
+1. Find the Process ID (PID) occupying port 8000:
+   ```powershell
+   Get-Process -Id (Get-NetTCPConnection -LocalPort 8000).OwningProcess
+   ```
+2. Kill the process (replace `PID` with the ID found in step 1):
+   ```powershell
+   Stop-Process -Id PID -Force
+   ```
+   *Alternatively, force kill all python processes occupying port 8000 in one go:*
+   ```powershell
+   Stop-Process -Id (Get-NetTCPConnection -LocalPort 8000).OwningProcess -Force
+   ```
+
+### On macOS / Linux
+1. Find the PID:
+   ```bash
+   lsof -i :8000
+   ```
+2. Kill the process:
+   ```bash
+   kill -9 PID
+   ```
+
+---
+
+## 📁 File Structure & Organization
 
 * **`src/predict.py`**: Command-line tool for offline image prediction.
 * **`src/serve.py`**: FastAPI server hosting the deep learning API endpoints.
 * **`web/`**: Next.js interactive web frontend dashboard.
+* **`web/.env.local`**: Configures the API URL connecting the frontend to the backend.
 * **`output_samples/`**: During training, saves a side-by-side image comparison (Input IR, Generated, Target) every 5 epochs. During offline prediction, outputs are saved here.
 * **`saved_models/`**: Stores generator training checkpoints (`generator_epoch_{n}.pth`) saved every 5 epochs.
 * **`evaluation/`**: Contains the scripts for automated performance evaluations.
@@ -119,6 +127,4 @@ The project includes a web dashboard built with Next.js that communicates with a
 
 ⚠️ **WARNING FOR TEAM COLLABORATION** ⚠️
 When pushing to GitHub, **never** push the `.venv/`, `data/`, `saved_models/`, `eval_results/`, or `web/node_modules/` folders. 
-* Your environments and nodes won't work on other people's computers.
-* Training data and model checkpoints are extremely large and will crash your git push (GitHub has a 100MB file limit). 
-*(Don't worry, we've already set up a `.gitignore` file to protect you from accidentally doing this!)*
+*(These are already configured in our `.gitignore` to prevent accidental commits.)*

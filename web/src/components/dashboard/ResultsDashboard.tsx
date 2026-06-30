@@ -43,9 +43,15 @@ export function ResultsDashboard({ results, metrics }: ResultsDashboardProps) {
         <div>
           <h2 className="text-xl font-bold text-primary flex items-center gap-2">
             Reconstruction Console
-            <span className="flex items-center gap-1 text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/20 uppercase tracking-wider">
-              <CheckCircle2 className="w-3 h-3" /> Processed
-            </span>
+            {metrics?.isDemoFallback ? (
+              <span className="flex items-center gap-1 text-[10px] font-semibold bg-amber-500/10 text-amber-400 px-2 py-0.5 rounded-full border border-amber-500/20 uppercase tracking-wider animate-pulse">
+                ⚠️ Demo Fallback
+              </span>
+            ) : (
+              <span className="flex items-center gap-1 text-[10px] font-semibold bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/20 uppercase tracking-wider shadow-[0_0_10px_rgba(16,185,129,0.2)]">
+                <CheckCircle2 className="w-3 h-3" /> Live Backend
+              </span>
+            )}
           </h2>
           <p className="text-[11px] text-muted-foreground">AI-powered Infrared Colorization & Detail Enhancement</p>
         </div>
@@ -58,7 +64,9 @@ export function ResultsDashboard({ results, metrics }: ResultsDashboardProps) {
           <div className="h-6 w-px bg-white/10" />
           <div className="flex flex-col items-end">
             <span className="text-[9px] font-mono text-muted-foreground uppercase">Pipeline Engine</span>
-            <span className="font-mono font-medium text-cyan-400">Pix2Pix + SRCNN</span>
+            <span className="font-mono font-medium text-cyan-400">
+              {metrics?.isDemoFallback ? "Mock Simulator" : "FastAPI + CUDA"}
+            </span>
           </div>
         </div>
       </div>
